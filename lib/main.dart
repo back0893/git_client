@@ -1,20 +1,41 @@
 import 'package:flutter/material.dart';
-
+import './common/global.dart';
+import 'widget/login.dart';
+import 'widget/repos.dart';
 void main() {
-  runApp(const MainApp());
+  Global.init().then((e)=>runApp(MainApp()));
 }
 
 class MainApp extends StatelessWidget {
-  const MainApp({super.key});
+  
+  MainApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       home: Scaffold(
-        body: Center(
-          child: Text('Hello World!'),
+        appBar: AppBar(
+          title: Text("git client"),
+        ),
+        body: ListenableBuilder(
+          listenable: Global.usermodel,
+          builder: (context,child) {
+            return Center(
+              child: _build(),
+            );
+          },
         ),
       ),
     );
   }
+    Widget _build() {
+      if(Global.usermodel.isLogin) {
+        return Repos();
+    }
+      return LoginPage();
+    }
+
+    dispose() {
+      Global.usermodel.dispose();
+    }
 }

@@ -14,8 +14,6 @@ class User {
   int following;
   String createdAt;
   String updatedAt;
-  int totalPrivateRepos;
-  int ownedPrivateRepos;
 
   User({
     required this.login,
@@ -33,8 +31,6 @@ class User {
     required this.following,
     required this.createdAt,
     required this.updatedAt,
-    required this.totalPrivateRepos,
-    required this.ownedPrivateRepos,
   });
 
   static User fromJson(Map<String, dynamic> json) {
@@ -48,8 +44,6 @@ class User {
         'following': final int following,
         'created_at': final String createdAt,
         'updated_at': final String updatedAt,
-        'total_private_repos': final int totalPrivateRepos,
-        'owned_private_repos': final int ownedPrivateRepos,
       }=>
         User(
           login: login,
@@ -60,8 +54,28 @@ class User {
           following: following,
           createdAt: createdAt,
           updatedAt: updatedAt,
-          totalPrivateRepos: totalPrivateRepos,
-          ownedPrivateRepos: ownedPrivateRepos,
+          name: json['name'] as String?,
+          company: json['company'] as String?,
+          blog: json['blog'] as String?,
+          location: json['location'] as String?,
+          email: json['email'] as String?,
+          hireable: json['hireable'] as bool?,
+          bio: json['bio'] as String?,
+        ),
+        {
+        'login': final String login,
+        'avatar_url': final String avatarUrl,
+        'type': final String type,
+      }=>
+        User(
+          login: login,
+          avatarUrl: avatarUrl,
+          type: type,
+          publicRepos: 0,
+          followers: 0,
+          following: 0,
+          createdAt: '',
+          updatedAt: '',
           name: json['name'] as String?,
           company: json['company'] as String?,
           blog: json['blog'] as String?,
@@ -71,6 +85,25 @@ class User {
           bio: json['bio'] as String?,
         ),
       _ => throw Exception('Invalid JSON: missing required fields'),  
+    };
+  }
+  Map<String, dynamic> toJson(){
+    return {
+      'login': login,
+      'avatar_url': avatarUrl,
+      'type': type,
+      'name': name,
+      'company': company,
+      'blog': blog,
+      'location': location,
+      'email': email,
+      'hireable': hireable,
+      'bio': bio,
+      'public_repos': publicRepos,
+      'followers': followers,
+      'following': following,
+      'created_at': createdAt,
+      'updated_at': updatedAt,
     };
   }
 }
